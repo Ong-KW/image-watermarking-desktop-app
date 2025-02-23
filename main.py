@@ -26,36 +26,38 @@ def add_text():
     opacity = round(int(opacity_scale.get()) * (255/100))
 
     for infile in glob.glob("/Image_to_Watermark/*"):
+
         file, ext = os.path.splitext(infile)
 
-        # Open image
-        with Image.open(infile).convert("RGBA") as base:
-            # Get the width and height of base image
-            W, H = base.size
+        if ext == ".jpg" or ".jpeg" or ".png":
+            # Open image
+            with Image.open(infile).convert("RGBA") as base:
+                # Get the width and height of base image
+                W, H = base.size
 
-            # Make a blank image for the text, initialized to transparent text color
-            txt = Image.new("RGBA", (W, H), (255, 255, 255, 0))
+                # Make a blank image for the text, initialized to transparent text color
+                txt = Image.new("RGBA", (W, H), (255, 255, 255, 0))
 
-            font = ImageFont.truetype(font=font_ttf, size=font_size)
+                font = ImageFont.truetype(font=font_ttf, size=font_size)
 
-            # Call draw Method to add 2D graphics in an image
-            d = ImageDraw.Draw(txt)
+                # Call draw Method to add 2D graphics in an image
+                d = ImageDraw.Draw(txt)
 
-            # Get the width and height of the text
-            _, _, w, h = d.textbbox((0, 0), text=msg, font=font)
+                # Get the width and height of the text
+                _, _, w, h = d.textbbox((0, 0), text=msg, font=font)
 
-            # Draw text, half opacity
-            d.text((W - w - 10, H - h - 10), text=msg, font=font, fill=(255, 255, 255, opacity))
+                # Draw text, half opacity
+                d.text((W - w - 10, H - h - 10), text=msg, font=font, fill=(255, 255, 255, opacity))
 
-            # Composite the text over the base image
-            result = Image.alpha_composite(base, txt)
+                # Composite the text over the base image
+                result = Image.alpha_composite(base, txt)
 
-            # Show the image
-            result.show()
+                # Show the image
+                result.show()
 
-            # Convert the result image to "RGB" and save as new "JPEG" file
-            out = result.convert("RGB")
-            out.save(file + "_watermarked.jpg", "JPEG")
+                # Convert the result image to "RGB" and save as new "JPEG" file
+                out = result.convert("RGB")
+                out.save(file + "_watermarked.jpg", "JPEG")
 
     # Close the window
     window.destroy()
