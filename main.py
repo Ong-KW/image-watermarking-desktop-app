@@ -25,7 +25,7 @@ def add_text():
     # Get the opacity (0 to 100%) selected by the user
     opacity = round(int(opacity_scale.get()) * (255/100))
 
-    for infile in glob.glob("/Image_to_Watermark/*.jpg"):
+    for infile in glob.glob("/Image_to_Watermark/*"):
         file, ext = os.path.splitext(infile)
 
         # Open image
